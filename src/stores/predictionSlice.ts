@@ -18,7 +18,13 @@ export const createPredictionSlice: StateCreator<PredictionSliceType> = (set) =>
         const predicted_classes = await getPrediction(file)
         console.log('predicted_classes:')
         console.log(predicted_classes)
-        set({ predicted_classes, predicting: false })
+        if (predicted_classes === undefined) {
+            set({ predicted_classes: { predictions: [] }, predicting: false })
+        } else {
+            set({ predicted_classes, predicting: false })
+
+        }
+
     }
 
 });
