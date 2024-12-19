@@ -1,3 +1,9 @@
+# Integrantes Grupo F
+* Pablo Márquez
+* Jose Llivichushca
+* Kevin Yansaguano
+* Jonnathan Saquicela
+
 # Frontend
 El frontend fue elaborado en vite react
 
