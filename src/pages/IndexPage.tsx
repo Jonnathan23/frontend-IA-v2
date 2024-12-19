@@ -40,11 +40,14 @@ export default function IndexPage() {
         <>
             <div className="container">
                 <h2>Predicción de Imagen</h2>
-                <form onSubmit={handleSubtmit}>
-                    <img src={image} alt="image_selec" />
-                    <input onChange={handleChange} type="file" name="file" id="file" />
-
-                    <input type="submit" value="Predecir" />
+                <form className="form__prediction" onSubmit={handleSubtmit}>
+                    <div className="field field__image">
+                        <img className="image__selected" src={image} alt="image_selec" />
+                    </div>
+                    <div className="cont__buttons">
+                        <input className="field__button" onChange={handleChange} type="file" name="file" id="file" />
+                    </div>
+                    <input className="field__button submit" type="submit" value="Predecir" />
                 </form>
             </div>
 
