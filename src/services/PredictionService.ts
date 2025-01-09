@@ -1,50 +1,55 @@
-import axios from "axios";
+
 import { safeParse } from "valibot";
-import { DraftPrediction } from "../types";
-import { DraftPredictionSchema, PredictionSchema } from "../utils/prediction-schema";
+import { api, apiHistory } from "../lib/axios";
+import { DraftHistoryPredictionImageSchema, PredictionSchema } from "../utils/schemas";
+import { labelTranslations } from "../data/db";
+import { handleApiError } from "../utils/error";
+import { Labels } from "../types";
+
 
 export async function getPrediction(file: File) {
     const formData = new FormData();
     formData.append('image', file);
 
     try {
-        const url = `${import.meta.env.VITE_API_URL}/predict/`;
-        const { data } = await axios.post(url, formData, {
+        const { data } = await api.post('/predict/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log('data:')
-        console.log(data)
-        const result = safeParse(PredictionSchema, data)
-        console.log('result:')
-        console.log(result)
 
+        const result = safeParse(PredictionSchema, data)
 
         if (result.success) {
-            return result.output
+            const predictions = result.output.predictions.map((prediction) => {
+                return { ...prediction, label: labelTranslations[prediction.label] }
+            })
+
+            return { predictions: predictions }
         } else {
-            throw new Error('Hubo un error')
+            throw new Error('Api data type error')
         }
 
     } catch (error) {
-        console.log(error);
+        handleApiError(error);
     }
 }
 
-
-export async function savePrediction(data: DraftPrediction) {
+export async function savePrediction(file: File, labels: Labels[]) {
     try {
-        const result = safeParse(DraftPredictionSchema, data)
+        const result = safeParse(DraftHistoryPredictionImageSchema, {
+            image: 'file',
+            date: '1/8/2025',
+            labels
+        })
 
         if (result.success) {
-            const url = `${import.meta.env.VITE_API_URL}/predictions`
-            await axios.post(url, data)
-
+            await apiHistory.post('/history', result.output);
+            console.log('Predicción guardada');
         } else {
-            throw new Error('Datos inválidos')
+            throw new Error('Error al guardar la predicción')
         }
     } catch (error) {
-        console.log(error)
+        handleApiError(error);
     }
 }

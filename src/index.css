@@ -162,6 +162,10 @@ main {
 
 }
 
+.field__button:disabled{
+    opacity: .5;
+}
+
 @media (min-width: 468px) {
     .form__prediction {
         display: grid;
