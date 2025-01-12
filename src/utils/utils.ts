@@ -1,10 +1,10 @@
-import { ToastContainer, toast } from 'react-toastify';
+export function formatDate(isoString: string) {
+    const date = new Date(isoString)
+    const formatter = new Intl.DateTimeFormat('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
 
-export const messageAlert = (toastId: Id, message: string, isError: boolean) => {
-    toast.update(toastId, {
-        render: "Predicción completada.",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-    });
+    return formatter.format(date)
 }

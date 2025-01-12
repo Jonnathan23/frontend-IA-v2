@@ -18,7 +18,7 @@ export const HistoryPredictionImageSchema = array(object({
 
 
 export const DraftHistoryPredictionImageSchema = object({
-    image: string(), //TODO: file(),    
+    image: file(),
     date: string(),
     labels: array(ResultPredictionSchema),
 })

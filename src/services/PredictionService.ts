@@ -5,6 +5,7 @@ import { DraftHistoryPredictionImageSchema, PredictionSchema } from "../utils/sc
 import { labelTranslations } from "../data/db";
 import { handleApiError } from "../utils/error";
 import { Labels } from "../types";
+import { formatDate } from "../utils/utils";
 
 
 export async function getPrediction(file: File) {
@@ -37,17 +38,29 @@ export async function getPrediction(file: File) {
 
 export async function savePrediction(file: File, labels: Labels[]) {
     try {
-        const result = safeParse(DraftHistoryPredictionImageSchema, {
-            image: 'file',
-            date: '1/8/2025',
-            labels
-        })
+        const data = {
+            image: file,
+            date: formatDate(new Date().toISOString()),
+            labels,
+        };
+
+        const result = safeParse(DraftHistoryPredictionImageSchema, data);
 
         if (result.success) {
-            await apiHistory.post('/history', result.output);
-            console.log('Predicción guardada');
+            const formData = new FormData();
+            formData.append("image", result.output.image);
+            formData.append("date", result.output.date);
+            formData.append("labels", JSON.stringify(result.output.labels));
+
+            await apiHistory.post("/history", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            console.log("Predicción guardada");
         } else {
-            throw new Error('Error al guardar la predicción')
+            throw new Error("Error al guardar la predicción");
         }
     } catch (error) {
         handleApiError(error);

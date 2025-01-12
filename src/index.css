@@ -207,6 +207,11 @@ main {
     }
 }
 
+/** |-------| | HistoryPredictions | |-------| */
+.image_prediction{
+    max-width: 30rem;
+}
+
 
 
 /** |-------| | Component PredictedClasses | |-------| */

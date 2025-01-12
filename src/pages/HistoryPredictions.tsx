@@ -1,34 +1,31 @@
-import { useEffect, useMemo } from "react";
-import { useAppStore } from "../stores/useAppStore"
+import { useQuery } from "@tanstack/react-query";
+import { getHistoryPredictions } from "../services/HistoryService";
 
-export default function HistoryPredictions() {
-    const { historyPredictions, getHistoryPredictions } = useAppStore();
-    const thereIsHistory = useMemo(() => { return historyPredictions.length ? true : false }, [historyPredictions])
-    useEffect(() => { getHistoryPredictions() }, [])
+export default function HistoryPredictions() {        
 
+    const { data, isLoading } = useQuery({
+        queryKey: ['historyPredictions'],
+        queryFn: getHistoryPredictions
+    })
+
+    if (isLoading) return <p>Cargando...</p>
+    if (!data) return <p>Sin predicciones</p>
     return (
         <>
-            {
-                thereIsHistory ? (
-                    <>
-                        {historyPredictions.map((prediction) => (
-                            <div key={prediction.id} className="container">
-                                <h3>Clases Predichas</h3>
-                                {prediction.labels.length > 0 ? (
-                                    prediction.labels.map(label => (
-                                        <p key={label.label}>{label.label} - {label.confidence.toFixed(3)}%</p>
-                                    ))) : (
-                                    <p>Sin predicciones</p>
-                                )
-                                }
-                            </div>
-                        ))
-                        }
-                    </>
-                ) : (
-                    <p>No hay historial de predicciones</p>
-                )
+            {data.map((prediction) => (
+                <div key={prediction.id} className="container">
+                    <h3 onClick={() => { console.log(prediction.image) }} >Clases Predichas</h3>
 
+                    <img className="image_prediction" src={prediction.image || 'selectImage.jpg'} alt={`image ${prediction.id}`} />
+                    {prediction.labels.length > 0 ? (
+                        prediction.labels.map(label => (
+                            <p key={label.label}>{label.label} - {label.confidence.toFixed(3)}%</p>
+                        ))) : (
+                        <p>Sin predicciones</p>
+                    )
+                    }
+                </div>
+            ))
             }
         </>
     )

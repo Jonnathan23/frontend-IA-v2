@@ -5,9 +5,8 @@ import { getHistoryPredictions } from "../services/HistoryService";
 
 export type PredictionSliceType = {
     predicted_classes: Prediction
-    historyPredictions: HistoryPredictions;
-    predicting: boolean
-    getPredictedClasses: (file: File) => Promise<void>
+    historyPredictions: HistoryPredictions;    
+    getPredictedClasses: (file: File) => Promise<Prediction | undefined>
     getHistoryPredictions: () => Promise<void>;
     saveHistoryPrediction: (file: File, labels: Labels[]) => Promise<void>;
 }
@@ -15,24 +14,22 @@ export type PredictionSliceType = {
 
 
 export const createPredictionSlice: StateCreator<PredictionSliceType> = (set) => ({
-    predicted_classes: { predictions: [] },
-    predicting: false,
+    predicted_classes: { predictions: [] },    
     historyPredictions: [],
 
-    getPredictedClasses: async (file: File) => {
-        set({ predicting: true })
+    getPredictedClasses: async (file: File) => {        
         try {
             let predicted_classes: Prediction | undefined
             predicted_classes = await getPrediction(file)
 
             set({
-                predicted_classes: predicted_classes === undefined ? { predictions: [] } : predicted_classes,
-                predicting: false
+                predicted_classes: predicted_classes === undefined ? { predictions: [] } : predicted_classes,                
             })
+
+            return predicted_classes
         } catch (error) {
             set({
-                predicted_classes: { predictions: [] },
-                predicting: false
+                predicted_classes: { predictions: [] }
             })
         }
 
