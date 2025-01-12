@@ -30,6 +30,7 @@ export default function IndexPage() {
         mutationFn: async ({ toastId }: { toastId: Id }) => {
             setPredicting(true);
             const classes = await getPredictedClasses(selectedFile!);
+            console.log(classes);
             await saveHistoryPrediction(selectedFile!, classes?.predictions || []);
             await getHistoryPredictions();
         },
@@ -75,7 +76,7 @@ export default function IndexPage() {
             </div>
 
             <div className="container">
-                <PredictedClasses />
+                <PredictedClasses  />
             </div>
             <ToastContainer />
         </>

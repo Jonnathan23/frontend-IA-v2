@@ -8,4 +8,7 @@ const apiHistory = axios.create({
     baseURL: import.meta.env.VITE_API_HISTORY
 })
 
-export { api, apiHistory }
+const apiGoogle = axios.create({
+    baseURL: 'https://texttospeech.googleapis.com/v1'
+})
+export { api, apiHistory, apiGoogle }
