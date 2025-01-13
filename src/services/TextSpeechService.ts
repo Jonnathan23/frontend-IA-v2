@@ -1,16 +1,14 @@
 import { apiGoogle } from "../lib/axios";
 import { Prediction } from "../types";
 import { handleApiError } from "../utils/error"
+import { formatTextApi } from "../utils/utils";
 
 export const speakText = async (predicted_classes: Prediction) => {
     try {
         const apiKey = import.meta.env.VITE_API_GOOGLE;
         const url = `/text:synthesize?key=${apiKey}`
-
-        //const textToSpeech = "Hello, world!";
-        const predictionsText = predicted_classes.predictions
-            .map((prediction) => prediction.label)
-            .join(", ")
+        
+        const predictionsText = formatTextApi(predicted_classes);
 
         const requestBody = {
             input: { text: `Gracias por esperar, en la imagen se puede apreciar principalmente: ${predictionsText}, que tanga un buen dia` },

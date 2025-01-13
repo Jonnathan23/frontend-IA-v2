@@ -64,7 +64,8 @@ export default function IndexPage() {
                         <img className="image__selected" src={image} alt="image_selec" />
                     </div>
                     <div className="cont__buttons">
-                        <input className="field__button" onChange={handleChange} type="file" name="file" id="file" />
+                        <label className="field__button label__field__button" htmlFor="file">Seleccionar Image</label>
+                        <input className="field__button input__file" onChange={handleChange} type="file" name="file" id="file" />
                     </div>
                     <input
                         className="field__button submit"

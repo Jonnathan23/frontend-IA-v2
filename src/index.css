@@ -4,7 +4,8 @@
     --Grey: hsl(231, 7%, 60%);
     --White: hsl(0, 0%, 100%);
     --fontMain: "Roboto", sans-serif;
-    --tomato: hsl(4, 100%, 67%);
+    --tomato: rgb(255, 98, 87);
+    --tomato-deep: rgb(200, 66, 59);
     --pink: hsl(333, 78%, 51%);
 }
 
@@ -162,8 +163,21 @@ main {
 
 }
 
+.field__button:hover {
+    background-color: var(--tomato-deep);
+}
+
+
 .field__button:disabled{
     opacity: .5;
+}
+
+.label__field__button{
+    text-align: center;
+}
+
+.input__file{
+    display: none;
 }
 
 @media (min-width: 468px) {
@@ -216,6 +230,13 @@ main {
 
 /** |-------| | Component PredictedClasses | |-------| */
 
+.content__prediction {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .predicted__classes {
     display: flex;
     flex-direction: column;
@@ -223,4 +244,34 @@ main {
     align-items: center;
 
     gap: 1rem;
+}
+
+.button__prediction{
+    padding: .8rem;
+    color: #ffff;
+    background-color: var(--tomato);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.button__prediction:hover {
+    background-color: var(--tomato-deep);
+    
+}
+
+.button__prediction:disabled{
+    opacity: .5;
+}
+
+
+@media (min-width: 468px) {
+    .button__prediction {
+        border-radius: .8rem;
+        padding: 1.2rem;
+
+        display: flex;
+        justify-content: center;
+    }
 }
